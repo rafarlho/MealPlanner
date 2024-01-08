@@ -1,0 +1,21 @@
+<div class="nav">
+    <div class="logo" *ngIf="!hideLogo"></div>
+    <div [ngClass]="{'nav-buttons': !isMobile,'nav-buttons-small':isMobile}">
+        <button mat-raised-button routerLinkActive="mat-active" routerLink="/planner" color="brown" [ngClass]="{'text-small': isMobile}">Weekly Planner<mat-icon *ngIf="!hideIcons">calendar_today</mat-icon></button>
+        <button mat-raised-button routerLinkActive="mat-active" routerLink="/shoppinglist" color="brown" [ngClass]="{'text-small': isMobile}"><mat-icon *ngIf="!hideIcons">shopping_cart</mat-icon>Shopping List</button>
+        <button mat-raised-button routerLinkActive="mat-active" routerLink="/products" color="brown" [ngClass]="{'text-small': isMobile}"><mat-icon *ngIf="!hideIcons">fastfood</mat-icon>Products List</button>
+        <button mat-raised-button routerLinkActive="mat-active" [matMenuTriggerFor]="menu" color="brown" [ngClass]="{'text-small': isMobile}"><mat-icon *ngIf="!hideIcons">more_vert</mat-icon>Options</button>
+    </div>
+</div>
+
+<mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <mat-icon>account_circle</mat-icon>
+      <span>Profile</span>
+    </button>
+    <button mat-menu-item (click)="openDialog()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+
+  </mat-menu>

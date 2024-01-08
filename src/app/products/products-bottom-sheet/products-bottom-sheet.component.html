@@ -1,0 +1,23 @@
+<h4>Adding new product</h4>
+  <form [formGroup]="prodForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput type="text" formControlName="name" placeholder="Product name">
+      <mat-error *ngIf="prodForm.get('name')?.hasError('required')">Please enter a name</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type" placeholder="Product type">
+        <mat-option *ngFor="let type of[ProductType.Carbs, ProductType.Protein]" [value]="type">{{getTypeName(type)}}</mat-option>
+        
+      </mat-select>
+      <mat-error *ngIf="prodForm.get('type')?.hasError('required')">Please select a type</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+    <mat-label>Ingredients</mat-label>
+    <input matInput formControlName="ingredients" placeholder="Ingredients list" type="text">
+  </mat-form-field>
+  <br>
+  <button mat-button type="submit" [disabled]="!prodForm.valid" color="backgrounded">Add product</button>
+  <button mat-button (click)="onCloseClick()" color="warn">Cancel</button>
+</form>

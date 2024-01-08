@@ -1,0 +1,26 @@
+.main-background{
+    background-color: #F1DABF;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.white-background {
+    background-color: white;
+    position: absolute;
+    width: 90%;
+    left: 5%;
+}
+
+.nav-background {
+    height: 15%;
+    top: 5%;
+    border-radius: 20px;
+}
+
+.planner-background {
+    height: 70%;
+    top: 25%;
+    border-radius: 20px;
+    overflow: auto;
+}

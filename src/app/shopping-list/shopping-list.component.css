@@ -1,0 +1,12 @@
+.center-div {
+    margin: 10px;
+}
+
+mat-form-field {
+    margin: 5px;
+}
+
+.mat-mdc-icon-button.mat-backgrounded {
+    background-color:rgba(241,218,191,1);
+    margin-right: 10px;
+}

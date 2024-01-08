@@ -1,0 +1,11 @@
+mat-form-field {
+    margin: 2px;
+}
+.mat-mdc-button.mat-backgrounded {
+    background-color:rgba(241,218,191,1);
+
+    margin-right: 10px;
+}
+.mat-mdc-button.mat-warn {
+    background-color:rgba(241,218,191,1);
+}
