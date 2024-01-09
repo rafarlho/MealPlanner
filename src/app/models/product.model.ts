@@ -5,6 +5,6 @@ export enum ProductType {
 export interface Product {
     name:string
     ingredients?:string[]
-    type:ProductType
+    type: ProductType
     id?:string
 }

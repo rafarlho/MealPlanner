@@ -1,5 +1,5 @@
-import { Component} from '@angular/core';
-import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { Component, Inject} from '@angular/core';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Product, ProductType } from '../../models/product.model';
 import { FormBuilder, Validators } from '@angular/forms';
 @Component({
@@ -9,18 +9,30 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class ProductsBottomSheetComponent {
   ProductType = ProductType;
+  onEdit:Boolean=false
+  
   prodForm = this.fb.group({
     name:['',[Validators.required]],
-    type:['',[Validators.required]],
+    type:[2,[Validators.required]],
     ingredients:[''],
   })
   
   constructor(
     private matBottomSheetRef:MatBottomSheetRef,
     private fb:FormBuilder,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: Product
   ){}
 
   ngOnInit(): void {
+    if (this.data != null) {
+      this.onEdit=true;
+      this.prodForm.setValue({
+        name: this.data.name,
+        type:this.data.type,
+        ingredients: this.data.ingredients ? this.data.ingredients.join(',') : ''
+      });
+    }
+    else this.onEdit = false
   }
 
   ngOnDestroy(): void {
@@ -30,10 +42,10 @@ export class ProductsBottomSheetComponent {
     this.matBottomSheetRef.dismiss();
   }
   onSubmit(){
-    if(this.prodForm.value.name && this.prodForm.value.type!=null) {
-      let newP:Product = {name:this.prodForm.value.name,type: this.getTypeVal(this.prodForm.value.type)}
+    if(this.prodForm.value.name && this.prodForm.value.type!=null && !this.onEdit) {
+      let newP:Product = {name:this.prodForm.value.name,type: this.prodForm.value.type}
       if(this.prodForm.value.ingredients) {
-        newP.ingredients = [this.prodForm.value.ingredients]
+        newP.ingredients = this.prodForm.value.ingredients.split(',')
       }
       this.matBottomSheetRef.dismiss(newP)
     }

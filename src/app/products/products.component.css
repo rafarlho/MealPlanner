@@ -8,12 +8,34 @@
     margin: 2.5%;
     flex: 1;
 }
+.mat-table-rounded {
+    border-radius: 10px; 
+    overflow: hidden;
+}
+.mat-column-name{
+  border-right: 1px solid currentColor;
+}
+
+.mat-column-type{
+    border-right: 1px solid currentColor;
+}
+.mat-column-ingredients{
+    border-right: 1px solid currentColor;
+}
+
 .button-container {
     margin: 2.5%;
     width: 15%;
     display: flex;
     flex-direction: column;
 }
+.empty-list {
+    margin: 10px;
+    height: 10%;
+}
+
+
+
 
 /*MOBILE*/
 .container-mobile {

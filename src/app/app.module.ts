@@ -16,6 +16,7 @@ import { LogoutWarningComponent } from './nav/logout-warning/logout-warning.comp
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from '../environments/environments';
+import { DeleteAlertComponent } from './products/delete-alert/delete-alert.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { environment } from '../environments/environments';
     PageNotFoundComponent,
     ShoppingListComponent,
     LogoutWarningComponent,
+    DeleteAlertComponent,
   ],
   imports: [
     BrowserModule,

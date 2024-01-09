@@ -4,35 +4,66 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ProductsBottomSheetComponent } from './products-bottom-sheet/products-bottom-sheet.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ProductsService } from '../services/products.service';
-import { Observable } from 'rxjs';
+import { Observable, filter, tap } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteAlertComponent } from './delete-alert/delete-alert.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrl: './products.component.css'
+  styleUrls: ['./products.component.css'], 
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 
 export class ProductsComponent {
   productList$!:Observable<Product[]>;
-
-  displayedColumns = ['name','type','options']
+  isEmpty!:boolean
+  displayedColumns = ['name','type','ingredients','options']
 
 
   constructor(
     private matBottomSheet:MatBottomSheet,
     private breakpointService:BreakpointObserver,
     private prodService:ProductsService,
-  ){}
-
-  isMobile:boolean = false
-  ngOnInit(): void {
+    public dialog: MatDialog
+  ){ 
     this.productList$ = this.prodService.getProducts()
+    this.productList$.pipe(
+      tap((list) =>{
+        if(list.length!=0){
+          this.isEmpty = false
+        }
+        else this.isEmpty = true
+      })
+    ).subscribe()
     this.breakpointService
       .observe([Breakpoints.Small,Breakpoints.XSmall,Breakpoints.Medium])
       .subscribe((result)=>{
         this.isMobile = false
         if(result.matches) this.isMobile=true
+    })
+  };
+  
+
+  isMobile:boolean = false
+  ngOnInit(): void {
+   
+  }
+
+  editProduct(p:Product) {
+    let bottomSheet = this.matBottomSheet.open(ProductsBottomSheetComponent,{disableClose:true,data:p})
+    bottomSheet.afterDismissed().subscribe((result)=>{
+      if(result) {
+        this.prodService.addProduct(result)
+      }
     })
   }
 
@@ -44,7 +75,7 @@ export class ProductsComponent {
       }
     })
   }
-
+ 
   getTypeNme(type:ProductType):string {
     return type === ProductType.Carbs ? 'Carbs' : 'Protein'
   }
@@ -53,9 +84,9 @@ export class ProductsComponent {
     this.prodService.deleteProduct(p)
   }
 
-  deleteAllProducts() {
-    
+ 
+  openDialog(){
+    this.dialog.open(DeleteAlertComponent,{data:this.productList$})
   }
-  
 }
 
