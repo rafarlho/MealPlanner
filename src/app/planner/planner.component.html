@@ -1,28 +1,31 @@
 <div [ngClass]="{'show-days-medium':isMedium,'show-days':!isMedium}">
-    <div [ngClass]="{'day-to-present-medium':isMedium,'day-to-present':!isMedium}" *ngFor="let day of days,let i=index">
-        <h3>{{day.name}}</h3>
+    <div [ngClass]="{'day-to-present-medium':isMedium,'day-to-present':!isMedium}" *ngFor="let day of (daysList$ |async),let i=index">
+        <div class="day-options">
+            <h3>{{day.name.toString()}}</h3>
+        </div>
             <mat-accordion class="meal">
-                <mat-expansion-panel [expanded]="day.step === 1" (opened)="setStep(i,1)">
+                <mat-expansion-panel [expanded]="day.step === 1" (opened)="setStep(day,1)">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Lunch</mat-panel-title>
                     </mat-expansion-panel-header>
                     <ng-container *ngIf="day.lunch.length===0 || day.lunch.length===1;else showLunch">
                         <mat-form-field class="form-field">
                             <mat-label>Carbs</mat-label>
-                            <mat-select panelClass="select-class">
-                                <mat-option value="f" *ngFor="let f of foods ">{{f}}</mat-option>
+                            <mat-select panelClass="select-class"  [(ngModel)]="selectedCarbs[i]"> 
+                                <mat-option [value]="f_carbs.id" *ngFor="let f_carbs of (carbsList$ | async) ">{{f_carbs.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field class="form-field">
                             <mat-label>Protein</mat-label>
-                            <mat-select>
-                                <mat-option value="f" *ngFor="let f of foods ">{{f}}</mat-option>
+                            <mat-select [(ngModel)]="selectedProteins[i]">
+                                <mat-option [value]="f_prot.id" *ngFor="let f_prot of (protsList$ | async )">{{f_prot.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
+                        <button mat-button (click)="setLunch(day.id,i)"><mat-icon>edit</mat-icon>Add meal</button>
                     </ng-container>    
                     <ng-template #showLunch>
                         <div>
-                            <h4>{{day.lunch[0]}} with {{day.lunch[1]}}</h4>
+                            <h4>{{day.lunch[0].name}} with {{day.lunch[1].name}}</h4>
                             <button mat-icon-button><mat-icon>edit</mat-icon></button>
                         </div>
                     </ng-template>
@@ -30,66 +33,33 @@
             </mat-accordion>
             
             <mat-accordion class="meal">
-                <mat-expansion-panel [expanded]="day.step === 2" (opened)="setStep(i,2)" >
+                <mat-expansion-panel [expanded]="day.step === 2" (opened)="setStep(day,2)" >
                     <mat-expansion-panel-header>
                         <mat-panel-title>Dinner</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <mat-form-field class="form-field">
-                        <mat-label>Carbs</mat-label>
-                        <mat-select panelClass="select-class">
-                            <mat-option value="f" *ngFor="let f of foods ">{{f}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="form-field">
-                        <mat-label>Protein</mat-label>
-                        <mat-select>
-                            <mat-option value="f" *ngFor="let f of foods ">{{f}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <ng-container  *ngIf="day.dinner.length!=2;else showDinner">
+
+                        <mat-form-field class="form-field">
+                            <mat-label>Carbs</mat-label>
+                            <mat-select panelClass="select-class">
+                                <mat-option value="f.id" *ngFor="let f of (carbsList$ | async ) ">{{f.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="form-field">
+                            <mat-label>Protein</mat-label>
+                            <mat-select>
+                                <mat-option value="f.id" *ngFor="let f of (protsList$ | async )">{{f.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button mat-button><mat-icon>edit</mat-icon>Add meal</button>
+                    </ng-container>
+                    <ng-template #showDinner>
+                        <div>
+                            <h4>{{day.dinner[0].name}} with {{day.dinner[1].name}}</h4>
+                            <button mat-icon-button><mat-icon>edit</mat-icon></button>
+                        </div>
+                    </ng-template>
                 </mat-expansion-panel>
             </mat-accordion>
-        <!--
-        <mat-card class="meal">
-            <mat-card-header><u>Lunch</u></mat-card-header>
-            <mat-card-content class="meal-content">
-                <mat-form-field class="form-field">
-                    <mat-label>Carbs</mat-label>
-                    <mat-select>
-                        <mat-option value="f" *ngFor="let f of foods ">{{f}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </mat-card-content>
-           
-            <mat-card-actions class="meal-content">
-                <mat-form-field class="form-field">
-                    <mat-label>Protein</mat-label>
-                    <mat-select>
-                        <mat-option value="f" *ngFor="let f of foods ">{{f}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </mat-card-actions>
-        </mat-card>
-        <mat-card class="meal">
-            <mat-card-header><u>Dinner</u></mat-card-header>
-            <mat-card-content class="meal-content">
-                <mat-form-field class="form-field">
-                    <mat-label>Carbs</mat-label>
-                    <mat-select>
-                        <mat-option value="f" *ngFor="let f of foods ">{{f}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </mat-card-content>
-           
-            <mat-card-actions class="meal-content">
-                <mat-form-field class="form-field">
-                    <mat-label>Protein</mat-label>
-                    <mat-select>
-                        <mat-option value="f" *ngFor="let f of foods ">{{f}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </mat-card-actions>
-        </mat-card>
-
-        -->
     </div>
 </div>

@@ -42,13 +42,25 @@ export class ProductsBottomSheetComponent {
     this.matBottomSheetRef.dismiss();
   }
   onSubmit(){
-    if(this.prodForm.value.name && this.prodForm.value.type!=null && !this.onEdit) {
-      let newP:Product = {name:this.prodForm.value.name,type: this.prodForm.value.type}
-      if(this.prodForm.value.ingredients) {
-        newP.ingredients = this.prodForm.value.ingredients.split(',')
+    if(this.prodForm.value.name && this.prodForm.value.type!=null) {
+      if(!this.onEdit) {
+
+        let newP:Product = {name:this.prodForm.value.name,type: this.prodForm.value.type}
+        if(this.prodForm.value.ingredients) {
+          newP.ingredients = this.prodForm.value.ingredients.split(',')
+        }
+        this.matBottomSheetRef.dismiss(newP)
       }
-      this.matBottomSheetRef.dismiss(newP)
+      else {
+        this.data.name = this.prodForm.value.name
+        this.data.type = this.prodForm.value.type
+        if(this.prodForm.value.ingredients) {
+          this.data.ingredients = this.prodForm.value.ingredients.split(',')
+        }
+        this.matBottomSheetRef.dismiss(this.data)
+      }
     }
+
   }
   getTypeName(type:ProductType):string {
     return type === ProductType.Carbs ? 'Carbs' : 'Protein'

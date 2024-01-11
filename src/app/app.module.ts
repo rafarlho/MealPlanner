@@ -17,6 +17,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from '../environments/environments';
 import { DeleteAlertComponent } from './products/delete-alert/delete-alert.component';
+import { LayoutEditorComponent } from './planner/layout-editor/layout-editor.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { DeleteAlertComponent } from './products/delete-alert/delete-alert.compo
     ShoppingListComponent,
     LogoutWarningComponent,
     DeleteAlertComponent,
+    LayoutEditorComponent,
   ],
   imports: [
     BrowserModule,

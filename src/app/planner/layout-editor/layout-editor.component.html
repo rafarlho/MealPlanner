@@ -1,0 +1,17 @@
+<div class="dialog-background">
+    <p>Set the days you wish to have on your planner</p>
+    <section class="example-section" [formGroup]="days">
+        <h4>Select your toppings:</h4>
+        <p><mat-checkbox formControlName="monday">Monday</mat-checkbox></p>
+        <p><mat-checkbox formControlName="tuesday">Tuesday</mat-checkbox></p>
+        <p><mat-checkbox formControlName="wednesday">Wednesday</mat-checkbox></p>
+        <p><mat-checkbox formControlName="thursday">Thursday</mat-checkbox></p>
+        <p><mat-checkbox formControlName="friday">Friday</mat-checkbox></p>
+        <p><mat-checkbox formControlName="saturday">Saturday</mat-checkbox></p>
+        <p><mat-checkbox formControlName="sunday">Sunday</mat-checkbox></p>
+    </section>
+    
+    <button mat-flat-button color="warn" style="margin-left: 10%;">Cancel</button>  
+    <button mat-flat-button color="brown" (click)="closeDialog()">Edit</button>   
+      
+</div>

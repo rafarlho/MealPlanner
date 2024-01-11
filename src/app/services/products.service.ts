@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { Product } from '../models/product.model';
-import { Observable, take } from 'rxjs';
+import { Product, ProductType } from '../models/product.model';
+import { Observable, filter, map, take } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
@@ -27,6 +27,22 @@ export class ProductsService {
 
   getProducts():Observable<Product[]> {
     return this.productCollection.valueChanges()
+  }
+  
+  getProductsCarbs():Observable<Product[]> {
+    return this.productCollection.valueChanges().pipe(
+      map((products:Product[]) => products.filter((product)=> {
+        return product.type === ProductType.Carbs
+      }))
+    )
+  }
+  
+  getProductsProteins():Observable<Product[]> {
+    return this.productCollection.valueChanges().pipe(
+      map((products:Product[]) => products.filter((product)=> {
+        return product.type === ProductType.Protein
+      }))
+    )
   }
 
   deleteProduct(p:Product) {

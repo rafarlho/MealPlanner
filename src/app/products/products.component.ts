@@ -62,7 +62,7 @@ export class ProductsComponent {
     let bottomSheet = this.matBottomSheet.open(ProductsBottomSheetComponent,{disableClose:true,data:p})
     bottomSheet.afterDismissed().subscribe((result)=>{
       if(result) {
-        this.prodService.addProduct(result)
+        this.prodService.updateProduct(result)
       }
     })
   }

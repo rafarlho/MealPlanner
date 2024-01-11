@@ -1,6 +1,10 @@
+import { Product } from "./product.model"
+
 export interface DayModel {
+    id?:string
     name:string
     step:number
-    lunch:string[]
-    dinner:string[]
+    lunch:Product[]
+    dinner:Product[]
+    
 }
