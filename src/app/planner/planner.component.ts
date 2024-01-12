@@ -4,7 +4,7 @@ import { DayModel } from '../models/days.model';
 import { ProductsService } from '../services/products.service';
 import { Product } from '../models/product.model';
 import { Observable, Observer, Subject, map, of, switchMap, take, tap } from 'rxjs';
-import { DaysValidator } from '../models/days-validator.model';
+
 import { DayService } from '../services/day.service';
 
 
@@ -14,7 +14,7 @@ import { DayService } from '../services/day.service';
   styleUrl: './planner.component.css'
 })
 export class PlannerComponent {
-  daysActive!:DaysValidator
+  
   daysList$!:Observable<DayModel[]>
   carbsList$!:Observable<Product[]>
   protsList$!:Observable<Product[]>
