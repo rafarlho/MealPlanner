@@ -11,22 +11,23 @@
                     <ng-container *ngIf="day.lunch.length===0 || day.lunch.length===1;else showLunch">
                         <mat-form-field class="form-field">
                             <mat-label>Carbs</mat-label>
-                            <mat-select panelClass="select-class"  [(ngModel)]="selectedCarbs[i]"> 
-                                <mat-option [value]="f_carbs.id" *ngFor="let f_carbs of (carbsList$ | async) ">{{f_carbs.name}}</mat-option>
+                            <mat-select panelClass="select-class"  [(ngModel)]="selectedCarbsLunch[i]"> 
+                                <mat-option [value]="f_carbs" *ngFor="let f_carbs of (carbsList$ | async) ">{{f_carbs.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field class="form-field">
                             <mat-label>Protein</mat-label>
-                            <mat-select [(ngModel)]="selectedProteins[i]">
-                                <mat-option [value]="f_prot.id" *ngFor="let f_prot of (protsList$ | async )">{{f_prot.name}}</mat-option>
+                            <mat-select [(ngModel)]="selectedProteinsLunch[i]">
+                                <mat-option [value]="f_prot" *ngFor="let f_prot of (protsList$ | async )">{{f_prot.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <button mat-button (click)="setLunch(day.id,i)"><mat-icon>edit</mat-icon>Add meal</button>
+                        <button mat-button (click)="setLunch(day,i)"><mat-icon>edit</mat-icon>Add meal</button>
                     </ng-container>    
                     <ng-template #showLunch>
                         <div>
                             <h4>{{day.lunch[0].name}} with {{day.lunch[1].name}}</h4>
                             <button mat-icon-button><mat-icon>edit</mat-icon></button>
+                            <button mat-icon-button><mat-icon>delete</mat-icon></button>
                         </div>
                     </ng-template>
                 </mat-expansion-panel>
@@ -41,17 +42,17 @@
 
                         <mat-form-field class="form-field">
                             <mat-label>Carbs</mat-label>
-                            <mat-select panelClass="select-class">
-                                <mat-option value="f.id" *ngFor="let f of (carbsList$ | async ) ">{{f.name}}</mat-option>
+                            <mat-select panelClass="select-class" [(ngModel)]="selectedCarbsDinner[i]">
+                                <mat-option [value]="f_carbs" *ngFor="let f_carbs of (carbsList$ | async ) ">{{f_carbs.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field class="form-field">
                             <mat-label>Protein</mat-label>
-                            <mat-select>
-                                <mat-option value="f.id" *ngFor="let f of (protsList$ | async )">{{f.name}}</mat-option>
+                            <mat-select [(ngModel)]="selectedProteinsDinner[i]">
+                                <mat-option [value]="f_prot" *ngFor="let f_prot of (protsList$ | async )">{{f_prot.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <button mat-button><mat-icon>edit</mat-icon>Add meal</button>
+                        <button mat-button (click)="setDinner(day,i)"><mat-icon>edit</mat-icon>Add meal</button>
                     </ng-container>
                     <ng-template #showDinner>
                         <div>

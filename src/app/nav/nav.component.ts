@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Observer, tap } from 'rxjs';
 import { LogoutWarningComponent } from './logout-warning/logout-warning.component';
-import { LayoutEditorComponent } from '../planner/layout-editor/layout-editor.component';
 
 @Component({
   selector: 'app-nav',
@@ -44,8 +43,5 @@ export class NavComponent {
     this.dialog.open(LogoutWarningComponent);
   }
 
-  openEditorLayout() {
-    this.dialog.open(LayoutEditorComponent)
-  }
 
 }

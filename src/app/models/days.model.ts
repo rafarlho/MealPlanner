@@ -6,5 +6,5 @@ export interface DayModel {
     step:number
     lunch:Product[]
     dinner:Product[]
-    
+    day:number
 }

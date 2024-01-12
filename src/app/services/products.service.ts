@@ -17,7 +17,7 @@ export class ProductsService {
     private firestore:AngularFirestore,
     private snackBar:MatSnackBar,
   ) {
-    this.productCollection = firestore.collection('products')
+    this.productCollection = firestore.collection('products',ref=>ref.orderBy('day','desc'))
   }
 
   addProduct(p:Product) {
