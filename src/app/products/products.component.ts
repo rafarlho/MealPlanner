@@ -4,23 +4,35 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ProductsBottomSheetComponent } from './products-bottom-sheet/products-bottom-sheet.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ProductsService } from '../services/products.service';
-import { Observable, filter, tap } from 'rxjs';
+import { Observable, filter, take, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteAlertComponent } from './delete-alert/delete-alert.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { NgIf, NgClass } from '@angular/common';
 
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css'], 
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+    selector: 'app-products',
+    templateUrl: './products.component.html',
+    styleUrls: ['./products.component.css'],
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed', style({ height: '0px', minHeight: '0' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ],
+    standalone: true,
+    imports: [
+        NgIf,
+        NgClass,
+        MatTableModule,
+        MatButtonModule,
+        MatIconModule,
+    ],
 })
 
 export class ProductsComponent {
@@ -33,10 +45,12 @@ export class ProductsComponent {
     private matBottomSheet:MatBottomSheet,
     private breakpointService:BreakpointObserver,
     private prodService:ProductsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    
   ){ 
+    
     this.productList$ = this.prodService.getProducts()
-    this.productList$.pipe(
+    this.productList$.pipe(take(1),
       tap((list) =>{
         if(list.length!=0){
           this.isEmpty = false
@@ -44,6 +58,7 @@ export class ProductsComponent {
         else this.isEmpty = true
       })
     ).subscribe()
+
     this.breakpointService
       .observe([Breakpoints.Small,Breakpoints.XSmall,Breakpoints.Medium])
       .subscribe((result)=>{

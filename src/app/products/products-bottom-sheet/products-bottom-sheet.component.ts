@@ -1,11 +1,29 @@
 import { Component, Inject} from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Product, ProductType } from '../../models/product.model';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { NgIf, NgFor } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
-  selector: 'app-products-bottom-sheet',
-  templateUrl: './products-bottom-sheet.component.html',
-  styleUrl: './products-bottom-sheet.component.css',
+    selector: 'app-products-bottom-sheet',
+    templateUrl: './products-bottom-sheet.component.html',
+    styleUrl: './products-bottom-sheet.component.css',
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgIf,
+        MatSelectModule,
+        NgFor,
+        MatOptionModule,
+        MatButtonModule,
+    ],
 })
 export class ProductsBottomSheetComponent {
   ProductType = ProductType;

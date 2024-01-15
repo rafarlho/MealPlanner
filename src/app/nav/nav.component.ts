@@ -3,11 +3,18 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Observer, tap } from 'rxjs';
 import { LogoutWarningComponent } from './logout-warning/logout-warning.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLinkActive, RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { NgIf, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-nav',
-  templateUrl: './nav.component.html',
-  styleUrl: './nav.component.css'
+    selector: 'app-nav',
+    templateUrl: './nav.component.html',
+    styleUrl: './nav.component.css',
+    standalone: true,
+    imports: [NgIf, NgClass, MatButtonModule, RouterLinkActive, RouterLink, MatIconModule, MatMenuModule]
 })
 export class NavComponent {
 

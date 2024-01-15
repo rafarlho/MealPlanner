@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Product, ProductType } from '../models/product.model';
-import { Observable, filter, map, take } from 'rxjs';
+import { Observable, filter, map, take, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class ProductsService {
     private firestore:AngularFirestore,
     private snackBar:MatSnackBar,
   ) {
-    this.productCollection = firestore.collection('products',ref=>ref.orderBy('day','desc'))
+    this.productCollection = firestore.collection('products')
   }
 
   addProduct(p:Product) {
@@ -67,7 +67,7 @@ export class ProductsService {
           this.snackBar.open('An error ocurred deleting.' ,'OK',{duration:3000})
         ,
         complete: ()=>
-          this.snackBar.open('Delete all files.' ,'OK',{duration:3000})
+          this.snackBar.open('Deleted all files.' ,'OK',{duration:3000})
       })      
   }
 

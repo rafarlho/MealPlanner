@@ -6,12 +6,22 @@ import { Product } from '../models/product.model';
 import { Observable, Observer, Subject, map, of, switchMap, take, tap } from 'rxjs';
 
 import { DayService } from '../services/day.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { NgClass, NgFor, NgIf, AsyncPipe } from '@angular/common';
 
 
 @Component({
-  selector: 'app-planner',
-  templateUrl: './planner.component.html',
-  styleUrl: './planner.component.css'
+    selector: 'app-planner',
+    templateUrl: './planner.component.html',
+    styleUrl: './planner.component.css',
+    standalone: true,
+    imports: [NgClass, NgFor, MatExpansionModule, NgIf, MatFormFieldModule, MatSelectModule, FormsModule, MatOptionModule, MatButtonModule, MatIconModule, AsyncPipe]
 })
 export class PlannerComponent {
   
@@ -35,15 +45,17 @@ export class PlannerComponent {
     this.carbsList$ = this.productService.getProductsCarbs()
     this.protsList$ = this.productService.getProductsProteins()
     this.daysList$ = this.dayService.getDays()
-    this.daysList$.pipe(take(1),tap((day)=>{
-      if(day.length != 7) {
-        this.dayService.deleteAllDays(day)
-        this.addDays()
-      }
-    }),
-   
-    )
+    this.daysList$.pipe(
+      take(1),
+      tap((day)=>{
+        if(day.length != 7) {
+          this.dayService.deleteAllDays(day)
+          this.addDays()
+          }
+        }),
+      )
       .subscribe()
+
     this.breakpointService
       .observe([Breakpoints.Medium,Breakpoints.Small,Breakpoints.XSmall])
       .subscribe((result)=>{

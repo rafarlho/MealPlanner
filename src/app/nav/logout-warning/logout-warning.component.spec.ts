@@ -8,8 +8,8 @@ describe('LogoutWarningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LogoutWarningComponent]
-    })
+    imports: [LogoutWarningComponent]
+})
     .compileComponents();
     
     fixture = TestBed.createComponent(LogoutWarningComponent);

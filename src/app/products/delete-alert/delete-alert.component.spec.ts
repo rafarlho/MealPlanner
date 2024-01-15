@@ -8,8 +8,8 @@ describe('DeleteAlertComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DeleteAlertComponent]
-    })
+    imports: [DeleteAlertComponent]
+})
     .compileComponents();
     
     fixture = TestBed.createComponent(DeleteAlertComponent);
