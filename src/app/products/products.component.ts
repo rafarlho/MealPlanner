@@ -7,7 +7,6 @@ import { ProductsService } from '../services/products.service';
 import { Observable, filter, take, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteAlertComponent } from './delete-alert/delete-alert.component';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -18,13 +17,6 @@ import { NgIf, NgClass } from '@angular/common';
     selector: 'app-products',
     templateUrl: './products.component.html',
     styleUrls: ['./products.component.css'],
-    animations: [
-        trigger('detailExpand', [
-            state('collapsed', style({ height: '0px', minHeight: '0' })),
-            state('expanded', style({ height: '*' })),
-            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-        ]),
-    ],
     standalone: true,
     imports: [
         NgIf,
@@ -39,6 +31,7 @@ export class ProductsComponent {
   productList$!:Observable<Product[]>;
   isEmpty!:boolean
   displayedColumns = ['name','type','ingredients','options']
+  isMobile:boolean = false
 
 
   constructor(
@@ -68,7 +61,6 @@ export class ProductsComponent {
   };
   
 
-  isMobile:boolean = false
   ngOnInit(): void {
    
   }

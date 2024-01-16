@@ -3,13 +3,13 @@ import { Component } from '@angular/core';
 import { DayModel } from '../models/days.model';
 import { ProductsService } from '../services/products.service';
 import { Product } from '../models/product.model';
-import { Observable, Observer, Subject, map, of, switchMap, take, tap } from 'rxjs';
+import { Observable} from 'rxjs';
 
 import { DayService } from '../services/day.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -21,7 +21,7 @@ import { NgClass, NgFor, NgIf, AsyncPipe } from '@angular/common';
     templateUrl: './planner.component.html',
     styleUrl: './planner.component.css',
     standalone: true,
-    imports: [NgClass, NgFor, MatExpansionModule, NgIf, MatFormFieldModule, MatSelectModule, FormsModule, MatOptionModule, MatButtonModule, MatIconModule, AsyncPipe]
+    imports: [NgClass, NgFor, MatExpansionModule, NgIf, MatFormFieldModule, MatSelectModule, FormsModule, MatOptionModule, MatButtonModule, MatIconModule, AsyncPipe,ReactiveFormsModule]
 })
 export class PlannerComponent {
   
@@ -38,24 +38,15 @@ export class PlannerComponent {
   constructor(
     private breakpointService:BreakpointObserver,
     private productService:ProductsService,
-    private dayService:DayService
+    private dayService:DayService,
+    private formBuilder:FormBuilder
   ){}
 
   ngOnInit(): void {
     this.carbsList$ = this.productService.getProductsCarbs()
     this.protsList$ = this.productService.getProductsProteins()
     this.daysList$ = this.dayService.getDays()
-    this.daysList$.pipe(
-      take(1),
-      tap((day)=>{
-        if(day.length != 7) {
-          this.dayService.deleteAllDays(day)
-          this.addDays()
-          }
-        }),
-      )
-      .subscribe()
-
+    console.log("carbs ", this.selectedCarbsLunch)
     this.breakpointService
       .observe([Breakpoints.Medium,Breakpoints.Small,Breakpoints.XSmall])
       .subscribe((result)=>{
@@ -68,42 +59,42 @@ export class PlannerComponent {
 
   setLunch(day:DayModel|undefined,i:number){
     if(day) {
-      const lunch:Product[] = [this.selectedCarbsLunch[i],this.selectedProteinsLunch[i]]
-      day.lunch = lunch
-      day.step=0
-      this.dayService.setLunch(day);
+      if(!(this.selectedCarbsLunch[i] && this.selectedProteinsLunch[i] )) alert("Please entre both proteins and carbs to set a meal!")
+      else {
+        const lunch:Product[] = [this.selectedCarbsLunch[i],this.selectedProteinsLunch[i]]
+        day.lunch = lunch
+        this.dayService.setLunch(day);
+      }
     }
   } 
   setDinner(day:DayModel|undefined,i:number){
     if(day) {
-      const dinner:Product[] = [this.selectedCarbsDinner[i],this.selectedProteinsDinner[i]]
-      day.dinner = dinner
-      day.step=0
-      this.dayService.setDinner(day);
+      if(!(this.selectedCarbsDinner[i] && this.selectedProteinsDinner[i])) alert("Please entre both proteins and carbs to set a meal!")
+      else{
+        const dinner:Product[] = [this.selectedCarbsDinner[i],this.selectedProteinsDinner[i]]
+        day.dinner = dinner
+        this.dayService.setDinner(day);
+      }
+    }
+  }
+
+  deleteLunch(day:DayModel|undefined,i:number){
+    if(day) {
+      delete this.selectedCarbsLunch[i]
+      delete this.selectedProteinsLunch[i]
+      this.dayService.deleteLunch(day)
+    }
+  }
+  
+  deleteDinner(day:DayModel|undefined,i:number){
+    if(day) {
+      delete this.selectedCarbsDinner[i]
+      delete this.selectedProteinsDinner[i]
+      this.dayService.deleteDinner(day)
     }
   }
 
   setStep(day:DayModel,step: number) {
     day.step=step
-  }
-
-  sortDays(days: DayModel[]): Observable<DayModel[]> {
-    return of(days.sort((a, b) => a.day - b.day));
-  }
-
-  addDays() {
-    const days:DayModel[] = [
-      { name:"Monday", id:'',lunch:[],dinner:[],step:0,day:0},
-      { name:"Tuesday", id:'',lunch:[],dinner:[],step:0,day:1},
-      { name:"Wednesday", id:'',lunch:[],dinner:[],step:0,day:2},
-      { name:"Thursday", id:'',lunch:[],dinner:[],step:0,day:3},
-      { name:"Friday", id:'',lunch:[],dinner:[],step:0,day:4},
-      { name:"Saturday", id:'',lunch:[],dinner:[],step:0,day:5},
-      { name:"Sunday", id:'',lunch:[],dinner:[],step:0,day:6},
-    ]
-    for(let i = 0 ; i < days.length ; i++) {
-      console.log("adding ",days[i].name)
-      this.dayService.addDay(days[i])
-    }
   }
 }
